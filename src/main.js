@@ -2,6 +2,7 @@ import './style.css';
 
 const usernameInput = document.getElementById('usernameInput');
 const usernameForm = document.getElementById('usernameForm');
+const usernameElement = document.getElementById('username');
 const infoDiv = document.getElementById('infoDiv');
 
 usernameForm.addEventListener('submit', (e) => {
@@ -9,11 +10,17 @@ usernameForm.addEventListener('submit', (e) => {
   const username = usernameInput.value
   .trim()
   .replaceAll('@', '')
-  .replaceAll(' ', '');
+  .replaceAll(' ', '')
+  .toLowerCase();
   window.alert(username);
   getInfo(username);
 });
 
+function updateUser(response) {
+  const stringResponse = JSON.stringify(response);
+  console.log(response['login'])
+  usernameElement.textContent = `@${response['login'] ?? 'Usuário não encontrado'}`
+}
 const getInfo = async(username) => {
   try {
     const info = await fetch(`https://api.github.com/users/${username}`)
@@ -25,10 +32,11 @@ const getInfo = async(username) => {
     })
     .then(info => {
       console.log(JSON.stringify(info));
+      updateUser(info);
     })
   } catch (err) {
     console.log(err)
   }
-}
+};
 
 
