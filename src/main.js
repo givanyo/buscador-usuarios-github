@@ -4,6 +4,7 @@ const usernameInput = document.getElementById('usernameInput');
 const usernameForm = document.getElementById('usernameForm');
 const usernameElement = document.getElementById('username');
 const infoDiv = document.getElementById('infoDiv');
+const profilePicture = document.getElementById('profilePicture');
 
 usernameForm.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -20,6 +21,7 @@ function updateUser(response) {
   const stringResponse = JSON.stringify(response);
   console.log(response['login'])
   usernameElement.textContent = `@${response['login'] ?? 'Usuário não encontrado'}`
+  profilePicture.src = `${response['avatar_url']}`
 }
 const getInfo = async(username) => {
   try {
