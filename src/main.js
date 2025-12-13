@@ -13,16 +13,23 @@ usernameForm.addEventListener('submit', (e) => {
   .replaceAll('@', '')
   .replaceAll(' ', '')
   .toLowerCase();
-  window.alert(username);
   getInfo(username);
 });
 
 function updateUser(response) {
-  const stringResponse = JSON.stringify(response);
-  console.log(response['login'])
-  usernameElement.textContent = `@${response['login'] ?? 'Usuário não encontrado'}`
-  profilePicture.src = `${response['avatar_url']}`
+  console.log(response['login']);
+  usernameElement.textContent = `@${response['login'] ?? 'Usuário não encontrado'}`;
+  profilePicture.src = `${response['avatar_url']}`;
+  infoDiv.innerHTML = `
+  <p>Nome: ${response['name'] ?? response['login']} </p>
+  <p>Localização: ${response['location'] ?? 'Não informado'}</p>
+  <p>Instituição: ${response['company'] ?? 'Não informado'}</p>
+  <p>Repositórios públicos: ${response['public_repos'] ?? 0} </p>
+  <p>Seguidores: ${response['followers'] ?? 0} </p>
+  <a href="${response['html_url']}">Ir para a conta</a>
+  `
 }
+
 const getInfo = async(username) => {
   try {
     const info = await fetch(`https://api.github.com/users/${username}`)
@@ -41,4 +48,5 @@ const getInfo = async(username) => {
   }
 };
 
+getInfo('github');
 
