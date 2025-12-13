@@ -16,8 +16,12 @@ body {
   background-size: cover;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   color: var(--black);
+  padding-inline: 16px;
 }
 
+svg {
+  cursor: pointer;
+}
 main {
   padding-block: 80px;
 }
