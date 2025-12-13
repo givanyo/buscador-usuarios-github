@@ -18,7 +18,7 @@ usernameForm.addEventListener('submit', (e) => {
 
 function updateUser(response) {
   console.log(response['login']);
-  usernameElement.textContent = `@${response['login'] ?? 'Usuário não encontrado'}`;
+  usernameElement.textContent = `@${response['login']}`;
   profilePicture.src = `${response['avatar_url']}`;
   infoDiv.innerHTML = `
   <p>Nome: ${response['name'] ?? response['login']} </p>
@@ -29,12 +29,22 @@ function updateUser(response) {
   <a href="${response['html_url']}">Ir para a conta</a>
   `
 }
-
+const getInfoFail = () => {
+  usernameElement.textContent = `Perfil não encontrado`;
+  profilePicture.src = `${'https://github.com/github.png'}`;
+  infoDiv.innerHTML = `
+  <p>Nome: N/A </p>
+  <p>Localização: N/A </p>
+  <p>Instituição: N/A </p>
+  <p>Seguidores: N/A </p>
+  `
+}
 const getInfo = async(username) => {
   try {
     const info = await fetch(`https://api.github.com/users/${username}`)
     .then(response => {
       if(!response.ok) {
+        getInfoFail();
         throw new Error ('A chamada falhou: Erro ' + response.status)
       }
       return response.json()
